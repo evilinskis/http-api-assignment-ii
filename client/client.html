@@ -5,17 +5,15 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
-    //Handles our FETCH response. This function is async because it
-    //contains an await.
-    const handleResponse = async (response) => {
+
+    const handleResponse = async (response, parsedResponse) => {
       
-      //Grab the content section
       const content = document.querySelector('#content');
 
       //display status codes
       switch(response.status) {
         case 200:
-          content.innerHTML = `<b>Success</b>`;
+          content.innerHTML = '<b>Success</b>';
           break;
         case 201:
           content.innerHTML = '<b>Created</b>';
@@ -38,7 +36,15 @@
         content.innerHTML += `<p>${obj.message}</p>`;
       }
 
-      content.innerHTML += `<p>${obj.body}</p`;
+      if(parsedResponse){
+
+        const parsedResponse = JSON.parse(resText);
+        h1.textContent = parsedResponse.id;
+        p.textContent = `Message: ${parsedResponse.message}`;
+        
+      }
+
+
     };
 
     //send post of name 
@@ -81,7 +87,7 @@
         },
       });
 
-      handleResponse(response);
+      handleResponse(response, method === 'get');
     };
 
     const init = () => {

@@ -31,13 +31,19 @@ const addUser = (request, response) => {
     message: 'Name and age are both required.',
   };
 
-  // check that the user has all fields
-  const { name, age } = request.body;
+  console.log(JSON.stringify(request));
 
-  if (!name || !age) {
+  // check that the user has all fields
+
+  // note: this code caused it to crash for some reason so it's edited
+  // but it still doesn't work properly
+
+  if (!request.name || !request.age) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
+
+  const { name, age } = request.body;
 
   // add user
   let responseCode = 204;
@@ -54,6 +60,7 @@ const addUser = (request, response) => {
     responseJSON.message = 'Created Successfully';
     return respondJSON(request, response, responseCode, responseJSON);
   }
+
   return respondJSON(request, response, responseCode, {});
 };
 
